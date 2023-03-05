@@ -13,7 +13,7 @@ const Status = ({ navigation }) => {
   return (
     <View className="flex-1 items-center justify-start bg-primary-2">
       <View className="flex-rows w-full items-center p-2 my-2">
-        <TextBox class="text-secondary-1 text-xl">Status</TextBox>
+        <TextBox class="text-secondary-1 text-3xl" italic>Status</TextBox>
       </View>
       <View className="mt-5">
         <View className="flex-row border border-slate-300 w-[80vw] h-[10vh] rounded-3xl items-center justify-between mb-5">

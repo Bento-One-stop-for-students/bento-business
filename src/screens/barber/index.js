@@ -69,7 +69,6 @@ const data = [
 ];
 
 const HomeBarber = ({ navigation }) => {
-  
   navigation.addListener("beforeRemove", (e) => {
     e.preventDefault();
   });
@@ -81,7 +80,9 @@ const HomeBarber = ({ navigation }) => {
   return (
     <View className="flex-1 items-center justify-start bg-primary-2">
       <View className="flex-row justify-around w-full items-center p-2 border-b border-b-gray-300">
-        <TextBox class="text-primary-1 text-xl">Queue</TextBox>
+        <TextBox class="text-primary-1 text-3xl" italic>
+          Queue
+        </TextBox>
         <TextBox class="text-primary-1 text-lg">Total : {Data.length}</TextBox>
       </View>
       {Data.length ? (

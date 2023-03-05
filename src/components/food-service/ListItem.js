@@ -57,7 +57,7 @@ const ListItem = ({ index, user, setState, setSelectedItem, setShowModal }) => {
     <Swipeable
       friction={2}
       renderRightActions={swipeRight}
-      rightThreshold={200}
+      rightThreshold={150}
       onSwipeableOpen={animatedDelete}
       key={user.id}
       ref={(ref) => {
