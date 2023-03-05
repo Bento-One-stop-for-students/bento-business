@@ -4,8 +4,7 @@ import React from "react";
 const ViewBox = (props) => {
   return (
     <View
-      className="items-center justify-start"
-      style={{ fontFamily: "Lato_400Regular" }}
+      className="items-center justify-start "
     >
       {props.children}
     </View>
