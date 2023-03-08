@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeFS from "../screens/foodOrder";
 import Status from "../screens/foodOrder/status";
-import ItemList from "../screens/foodOrder/itemList.";
+import ItemsList from "../screens/foodOrder/itemsList.";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +50,7 @@ const FSTabNavigator = () => {
       />
       <Tab.Screen
         name="status"
-        component={ItemList}
+        component={ItemsList}
         options={{
           title: "",
           tabBarIcon: ({ focused }) => (

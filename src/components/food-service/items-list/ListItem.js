@@ -2,7 +2,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import TextBox from "../../shared/TextBox";
 
-const ListItem = ({ item, index }) => {
+const ListItem = ({ item, index, setShowEditItemModal, setEditItemData }) => {
   return (
     <View
       className="w-full  p-5 border-b border-b-gray-500 items-center flex-row justify-between"
@@ -22,11 +22,17 @@ const ListItem = ({ item, index }) => {
         <Image
           className="w-20 h-20"
           source={{
-            uri: `${item.image}`,
+            uri: `${item.imgUrl}`,
           }}
           resizeMode="center"
         />
-        <TouchableOpacity className="ml-2 bg-primary-1 p-5 rounded-3xl">
+        <TouchableOpacity
+          className="ml-2 bg-primary-1 p-5 rounded-3xl"
+          onPress={() => {
+            setEditItemData(item);
+            setShowEditItemModal(true);
+          }}
+        >
           <TextBox class="text-white">Edit</TextBox>
         </TouchableOpacity>
       </View>
