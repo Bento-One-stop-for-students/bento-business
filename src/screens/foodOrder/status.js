@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { AuthContext } from "../../../lib/context/context";
+import { AuthContext } from "../../../lib/context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 

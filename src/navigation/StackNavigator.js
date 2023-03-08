@@ -8,7 +8,7 @@ import Home from "../screens/Auth";
 import SignIn from "../screens/Auth/signIn";
 import BarberTabNavigator from "./BarberTabNavigator";
 import FSTabNavigator from "./FoodServiceTabNavigator";
-import { AuthContext } from "../../lib/context/context";
+import { AuthContext } from "../../lib/context/authContext";
 import { StatusBar } from "expo-status-bar";
 
 const FS = createStackNavigator();

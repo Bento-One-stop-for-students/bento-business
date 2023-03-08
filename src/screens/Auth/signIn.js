@@ -1,12 +1,11 @@
-import { View, Text } from "react-native";
+import { View} from "react-native";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
 import { StatusBar } from "expo-status-bar";
 import InputField from "../../components/shared/InputField";
 import Button from "../../components/shared/Button";
 import { KeyboardAvoidingView } from "react-native";
-import { AuthContext } from "../../../lib/context/context";
-import { Input } from "native-base";
+import { AuthContext } from "../../../lib/context/authContext";
 
 const SignIn = ({ navigation, route }) => {
   const { state, dispatch } = React.useContext(AuthContext);

@@ -2,11 +2,15 @@
 import "react-native-gesture-handler";
 
 import React from "react";
+
+import * as Font from "expo-font";
+import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { NativeBaseProvider, View } from "native-base";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { NavigationContainer } from "@react-navigation/native";
+import { Pattaya_400Regular } from "@expo-google-fonts/pattaya";
 import {
-  useFonts,
   Lato_100Thin,
   Lato_100Thin_Italic,
   Lato_300Light,
@@ -18,12 +22,9 @@ import {
   Lato_900Black,
   Lato_900Black_Italic,
 } from "@expo-google-fonts/lato";
-import { Pattaya_400Regular } from "@expo-google-fonts/pattaya";
+
 import Main from "./src/main";
-import * as Font from "expo-font";
-import { NavigationContainer } from "@react-navigation/native";
-import { AuthProvider } from "./lib/context/context";
-import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "./lib/context/authContext";
 
 SplashScreen.preventAutoHideAsync();
 

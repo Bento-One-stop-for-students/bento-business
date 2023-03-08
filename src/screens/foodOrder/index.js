@@ -1,4 +1,4 @@
-import { BackHandler, View, Text, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
@@ -6,7 +6,8 @@ import ListItem from "../../components/food-service/ListItem";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import OrderModal from "../../components/food-service/orderModal";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Alert } from "react-native";
+import { BackHandler } from "react-native";
 
 const data = [
   {
@@ -132,6 +133,26 @@ const data = [
 ];
 
 const HomeFS = ({ navigation }) => {
+  React.useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Exit", "Are you sure you want to go exit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
   const [showModal, setShowModal] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(null);
   const [filter, setFilter] = React.useState("All");

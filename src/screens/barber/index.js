@@ -4,6 +4,7 @@ import React from "react";
 import TextBox from "../../components/shared/TextBox";
 import ListItem from "../../components/barber/ListItem";
 import { LinearGradient } from "expo-linear-gradient";
+import { Alert } from "react-native";
 
 const data = [
   {
@@ -69,9 +70,26 @@ const data = [
 ];
 
 const HomeBarber = ({ navigation }) => {
-  navigation.addListener("beforeRemove", (e) => {
-    e.preventDefault();
-  });
+  React.useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Exit", "Are you sure you want to go exit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const [Data, setData] = React.useState(data);
   React.useEffect(() => {
@@ -79,9 +97,9 @@ const HomeBarber = ({ navigation }) => {
   }, [Data]);
   return (
     <View className="flex-1 items-center justify-start bg-primary-2">
-      <View className="flex-row justify-around w-full items-center p-2 border-b border-b-gray-300">
-        <TextBox class="text-primary-1 text-3xl" italic>
-          Queue
+      <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2 ">
+        <TextBox class="text-secondary-1 text-3xl" italic>
+          Orders
         </TextBox>
         <TextBox class="text-primary-1 text-lg">Total : {Data.length}</TextBox>
       </View>
