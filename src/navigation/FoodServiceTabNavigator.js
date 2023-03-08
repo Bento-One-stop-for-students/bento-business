@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,6 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeFS from "../screens/foodOrder";
 import Status from "../screens/foodOrder/status";
 import ItemsList from "../screens/foodOrder/itemsList.";
+import Analytics from "../screens/foodOrder/analytics";
 
 const Tab = createBottomTabNavigator();
 
@@ -49,13 +51,27 @@ const FSTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="status"
+        name="items-list"
         component={ItemsList}
         options={{
           title: "",
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="fastfood"
+              size={24}
+              color={focused ? "#c2ffe2" : "#FBFBFB"}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="analytics"
+        component={Analytics}
+        options={{
+          title: "",
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="analytics"
               size={24}
               color={focused ? "#c2ffe2" : "#FBFBFB"}
             />

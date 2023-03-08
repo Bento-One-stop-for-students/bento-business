@@ -12,8 +12,8 @@ const Status = () => {
 
   const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <View className="flex-1 items-center justify-start bg-primary-2">
-      <View className="flex-rows w-full items-center p-1 my-2">
+    <View className="flex-1 w-full items-center justify-start bg-primary-2">
+      <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2">
         <TextBox class="text-secondary-1 text-3xl" italic>
           Status
         </TextBox>

@@ -1,12 +1,6 @@
-import { BackHandler, View, Text, FlatList } from "react-native";
-
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
-import ListItem from "../../components/food-service/ListItem";
-import { LinearGradient } from "expo-linear-gradient";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import OrderModal from "../../components/food-service/orderModal";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const data = [
   {
@@ -17,8 +11,8 @@ const data = [
     total: 1,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
+      { id: 2, name: "kurkure", price: 20, qty: 2 },
+      { id: 3, name: "uncle chips", price: 20, qty: 2 },
     ],
   },
   {
@@ -29,7 +23,7 @@ const data = [
     total: 232,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
+      { id: 2, name: "kurkure", price: 20, qty: 2 },
       { id: 3, name: "lays", price: 20, qty: 2 },
     ],
   },
@@ -131,27 +125,45 @@ const data = [
   },
 ];
 
-const HomeFS = ({ navigation }) => {
-  const [showModal, setShowModal] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState(null);
-  const [filter, setFilter] = React.useState("All");
+const Analytics = () => {
+  const [filter, setFilter] = React.useState("ALL");
+  const [analytics, setAnalytics] = React.useState();
 
-  const [Data, setData] = React.useState(data);
+  const calculateAnalytics = (data) => {
+    let analytics = { ALL: {}, "MBH-A": {}, "MBH-B": {}, "MBH-F": {} };
+
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].cart.length; j++) {
+        if (data[i].cart[j].name in analytics["ALL"]) {
+          analytics["ALL"][data[i].cart[j].name]++;
+        } else {
+          analytics["ALL"][data[i].cart[j].name] = 1;
+        }
+        if (data[i].cart[j].name in analytics[data[i].hostel]) {
+          analytics[data[i].hostel][data[i].cart[j].name]++;
+        } else {
+          analytics[data[i].hostel][data[i].cart[j].name] = 1;
+        }
+      }
+    }
+
+    return analytics;
+  };
   React.useEffect(() => {
-    console.log({ Data, selectedItem });
-  }, [Data, selectedItem]);
+    setAnalytics(calculateAnalytics(data));
+  }, [data]);
   return (
     <View className="flex-1 items-center justify-start bg-primary-2">
       <View className="w-full items-center pt-3 mb-3">
         <TextBox class="text-secondary-1 text-3xl" italic>
-          Orders
+          Analytics
         </TextBox>
       </View>
-      <View className="flex-row py-2 items-center justify-evenly w-[95vw] bg-[#c2ffe2] rounded-full mb-3">
+      <View className="flex-row py-2 items-center justify-evenly w-[95vw] bg-[#c2ffe2] rounded-full">
         <TouchableOpacity
           className="w-20 h-8 items-center justify-center rounded-full bg-primary-1"
           onPress={() => {
-            setFilter("All");
+            setFilter("ALL");
           }}
         >
           <TextBox class="text-white">All</TextBox>
@@ -181,42 +193,21 @@ const HomeFS = ({ navigation }) => {
           <TextBox class="text-white">F</TextBox>
         </TouchableOpacity>
       </View>
-      {Data.length ? (
-        <>
-          <FlatList
-            className="w-full h-full bg-primary-2 pb-96"
-            data={
-              filter !== "All" ? Data.filter((x) => x.hostel == filter) : Data
-            }
-            renderItem={({ item, index }) => (
-              <ListItem
-                index={index}
-                setState={setData}
-                user={item}
-                setSelectedItem={setSelectedItem}
-                setShowModal={setShowModal}
-              />
-            )}
-            contentContainerStyle={{ paddingBottom: 100 }}
-          />
-        </>
-      ) : (
-        <LinearGradient
-          colors={["#414141", "#383838"]}
-          className="w-[80vw] h-[10vh] mt-10 rounded-3xl items-center justify-center "
-        >
-          <TextBox class="text-white">Queue is Empty</TextBox>
-        </LinearGradient>
-      )}
-      {selectedItem && (
-        <OrderModal
-          isOpen={showModal}
-          onClose={setShowModal}
-          item={selectedItem}
-        />
-      )}
+      <View className="mt-5 w-[90vw] border border-secondary-1 rounded-3xl p-5">
+        <View className="items-center justify-between px-2 w-full flex-row mb-4">
+          <TextBox class="font-bold text-lg">Name </TextBox>
+          <TextBox class="font-bold text-lg">Quantity</TextBox>
+        </View>
+        {analytics &&
+          Object.keys(analytics[filter]).map((k, v) => (
+            <View className="items-center justify-between px-2 w-full flex-row">
+              <TextBox class="text-lg">{k}</TextBox>
+              <TextBox class="text-lg">{analytics[filter][k]}</TextBox>
+            </View>
+          ))}
+      </View>
     </View>
   );
 };
 
-export default HomeFS;
+export default Analytics;
