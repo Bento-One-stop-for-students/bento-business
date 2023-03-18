@@ -1,15 +1,39 @@
-import { View, Text } from "react-native";
 import React from "react";
-import { HStack, Modal, VStack } from "native-base";
+
+import { Modal } from "native-base";
 import Button from "../../shared/Button";
 import TextBox from "../../shared/TextBox";
 import InputField from "../../shared/InputField";
+import { addNewITem } from "../../../../lib/firebase/snackmen";
 
 const AddItemModal = (props) => {
+  const [disabled, setDisbaled] = React.useState(false);
   const [itemName, setItemName] = React.useState("");
   const [itemPrice, setItemPrice] = React.useState("");
   const [itemQty, setItemQty] = React.useState("");
   const [itemImgUrl, setItemImgUrl] = React.useState("");
+
+  const handleAddNewItem = async () => {
+    try {
+      setDisbaled(true);
+      await addNewITem({
+        name: itemName,
+        price: parseInt(itemPrice.trim()),
+        qty: parseInt(itemQty.trim()),
+        img_url: itemImgUrl,
+      });
+      console.log({
+        name: itemName,
+        price: itemPrice,
+        qty: itemQty,
+        img_url: itemImgUrl,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDisbaled(false);
+    }
+  };
 
   return (
     <Modal
@@ -52,18 +76,10 @@ const AddItemModal = (props) => {
               itemName == "" ||
               itemPrice == "" ||
               itemQty == "" ||
-              itemImgUrl == ""
-                ? true
-                : false
+              itemImgUrl == "" ||
+              disabled
             }
-            onPress={() => {
-              console.log({
-                name: itemName,
-                price: itemPrice,
-                qty: itemQty,
-                img_url: itemImgUrl,
-              });
-            }}
+            onPress={handleAddNewItem}
           />
         </Modal.Footer>
       </Modal.Content>

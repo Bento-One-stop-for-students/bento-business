@@ -8,12 +8,53 @@ import { KeyboardAvoidingView } from "react-native";
 import { AuthContext } from "../../../lib/context/authContext";
 import ErrorModal from "../../components/shared/ErrorModal";
 import auth from "@react-native-firebase/auth";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignIn = ({ navigation, route }) => {
   const { state, dispatch } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showErrorModal, setShowErrorModal] = React.useState(false);
+
+  // check if user exists
+
+  React.useEffect(() => {
+    const user = auth().currentUser;
+    if (user) {
+      dispatch({
+        type: "SIGN_IN",
+        payload: {
+          profession: user.profession,
+          uid: user.uid,
+        },
+      });
+    }
+  }, []);
+
+  const handleSignIn = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(async (userCredential) => {
+        console.log(userCredential.user);
+        try {
+          console.log(res);
+          dispatch({
+            type: "SIGN_IN",
+            payload: {
+              profession: userCredential.user.profession,
+              uid: userCredential.user.uid,
+            },
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      .catch((error) => {
+        setShowErrorModal(true);
+        console.error(error);
+      });
+  };
+
   return (
     <KeyboardAvoidingView
       className="flex-1 items-center justify-center"
@@ -38,29 +79,7 @@ const SignIn = ({ navigation, route }) => {
         </View>
         <Button
           text="Sign In"
-          onPress={() => {
-            auth()
-              .signInWithEmailAndPassword(email, password)
-              .then((userCredential) => {
-                console.log(userCredential.user);
-                console.log("User account created & signed in!");
-                dispatch({
-                  type: "SIGN_IN",
-                  payload: {
-                    profession: route.params.profession,
-                    uid: userCredential.user.uid,
-                  },
-                });
-                console.log({
-                  profession: route.params.profession,
-                  uid: userCredential.user.uid,
-                });
-              })
-              .catch((error) => {
-                setShowErrorModal(true);
-                console.error(error);
-              });
-          }}
+          onPress={handleSignIn}
           disabled={
             email == "" || password == "" || password.length < 8 ? true : false
           }

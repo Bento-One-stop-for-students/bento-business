@@ -1,9 +1,8 @@
 import React from "react";
 import NetInfo from "@react-native-community/netinfo";
-import StackNavigator, { AuthNavigator } from "./navigation/StackNavigator";
+import StackNavigator from "./navigation/StackNavigator";
 
 import ErrorModal from "./components/shared/ErrorModal";
-import { AuthContext } from "../lib/context/authContext";
 import { View } from "react-native";
 
 const Main = () => {

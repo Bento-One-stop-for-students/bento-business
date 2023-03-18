@@ -11,9 +11,10 @@
   "license": "MIT",
   "scripts": {
     "start:development": "SET FIREBASE_ENV=dev&&expo start --dev-client",
-    "start:production": "SET FIREBASE_ENV=prod&&expo start --dev-client",
-    "build:development": "SET FIREBASE_ENV=dev&&eas build --profile development --platform android ",
-    "build:production": "SET FIREBASE_ENV=prod&&eas build --profile preview --platform android",
+    "start:production": "set FIREBASE_ENV=prod&&expo start --dev-client",
+    "build:dev-client": "eas build --profile development --platform android",
+    "build:development":"SET FIREBASE_ENV=dev&&eas build --profile preview-development --platform android ",
+    "build:production":"SET FIREBASE_ENV=prod&&eas build --profile preview-production --platform android",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -55,7 +56,9 @@
     "react-native-svg": "13.4.0",
     "react-native-tab-view": "^3.5.1",
     "react-native-web": "~0.18.11",
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.2.7",
+    "@react-native-async-storage/async-storage": "1.17.11",
+    "expo-constants": "~14.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
