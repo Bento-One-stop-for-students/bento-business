@@ -9,7 +9,6 @@ import SignIn from "../screens/Auth/signIn";
 import BarberTabNavigator from "./BarberTabNavigator";
 import FSTabNavigator from "./FoodServiceTabNavigator";
 import { AuthContext } from "../../lib/context/authContext";
-import { StatusBar } from "expo-status-bar";
 
 const FS = createStackNavigator();
 const Auth = createStackNavigator();
@@ -30,38 +29,28 @@ export const AuthNavigator = () => {
   );
 };
 
-const FSNavigator = () => {
-  return (
-    <FS.Navigator
-      screenOptions={{
-        gestureEnabled: true,
-        headerShown: false,
-        ...TransitionPresets.SlideFromRightIOS,
-      }}
-      initialRouteName="home"
-    >
-      <FS.Screen name="home" component={HomeFS} />
-    </FS.Navigator>
-  );
-};
-
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   const { state } = React.useContext(AuthContext);
   return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          ...TransitionPresets.RevealFromBottomAndroid,
-        }}
-      >
-        {state.profession == "barber" ? (
-          <Stack.Screen name="barber" component={BarberTabNavigator} />
-        ) : (
-          <Stack.Screen name="food-service" component={FSTabNavigator} />
-        )}
-      </Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        ...TransitionPresets.RevealFromBottomAndroid,
+      }}
+    >
+      {!state.isLoggedIn ? (
+        <>
+          <Stack.Screen name="home" component={Home} />
+          <Stack.Screen name="sign-in" component={SignIn} />
+        </>
+      ) : state.profession == "barber" ? (
+        <Stack.Screen name="barber" component={BarberTabNavigator} />
+      ) : (
+        <Stack.Screen name="food-service" component={FSTabNavigator} />
+      )}
+    </Stack.Navigator>
   );
 };
 

@@ -4,6 +4,7 @@ import TextBox from "../shared/TextBox";
 import { LinearGradient } from "expo-linear-gradient";
 import { Swipeable } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import { deleteBarberBooking } from "../../../lib/firebase/barber";
 
 const swipeRight = (progress, dragX) => {
   return (
@@ -34,28 +35,36 @@ const swipeRight = (progress, dragX) => {
 };
 
 const ListItem = ({ index, user, setState }) => {
-  const [done, setDone] = React.useState(false);
   const [ref, setRef] = React.useState("");
   const height = new Animated.Value(70);
 
-  const animatedDelete = () => {
-    if (done) {
+  const userName =
+    user.name.split(" ")[0].charAt(0) +
+    user.name.split(" ")[0].slice(1).toLowerCase() +
+    " " +
+    user.name.split(" ")[1].charAt(0) +
+    user.name.split(" ")[1].slice(1).toLowerCase();
+
+  const animatedDelete = async () => {
+    try {
+      await deleteBarberBooking(user.booking_id);
+
       Animated.timing(height, {
         toValue: 0,
         duration: 350,
         useNativeDriver: false,
-      }).start(() =>
-        setState((prevState) => prevState.filter((e) => e.id !== user.id))
-      );
-    } else {
-        ref.close();
+      }).start();
+    } catch (err) {
+      console.log(err);
+      ref.close();
     }
   };
 
   return (
     <Swipeable
       renderRightActions={swipeRight}
-      rightThreshold={300}
+      rightThreshold={150}
+      friction={2}
       onSwipeableOpen={animatedDelete}
       key={user.id}
       ref={(ref) => {
@@ -65,17 +74,16 @@ const ListItem = ({ index, user, setState }) => {
       <Animated.View>
         <LinearGradient
           colors={["#FFFFFF", "#FBFBFB"]}
-          className="w-full py-4 items-center justify-between bg-primary-2 flex-row"
+          className="w-full py-6 items-center justify-between bg-primary-2 flex-row"
           style={{
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
         >
-          <View className="ml-6">
-            <TextBox class="text-lg text-primary-1">{user.name}</TextBox>
-            <TextBox class="text-lg text-[#47b17e]">{user.services}</TextBox>
+          <View className="ml-6 w-[70vw]">
+            <TextBox class="text-lg text-primary-1">{userName}</TextBox>
           </View>
-          <View className="border-2 rounded-full w-16 items-center justify-center border-primary-1 bg-primary-1 mr-6">
-            <TextBox class="text-xl text-primary-2">{user.token}</TextBox>
+          <View className="border-2 rounded-full px-2 items-center justify-center border-primary-1 bg-primary-1 mr-6">
+            <TextBox class="text-xl text-primary-2">{user.token_no}</TextBox>
           </View>
         </LinearGradient>
       </Animated.View>

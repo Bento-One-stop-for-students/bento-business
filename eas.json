@@ -1,6 +1,13 @@
 {
-    "build": {
-      "preview": {
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "env":{
+        "VAR_FIREBASE" : "prod"
+      },
         "android": {
           "buildType": "apk"
         }

@@ -50,7 +50,6 @@ export default function App() {
       } catch (e) {
         console.warn(e);
       } finally {
-        // Tell the application to render
         setAppIsReady(true);
       }
     }
@@ -73,12 +72,11 @@ export default function App() {
       background: "#FBFBFB",
     },
   };
-
   return (
-    <NativeBaseProvider>
-      <SafeAreaView className="flex-1">
-        <NavigationContainer theme={theme}>
-          <AuthProvider>
+    <SafeAreaView className="flex-1">
+      <NavigationContainer theme={theme}>
+        <AuthProvider>
+          <NativeBaseProvider>
             <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
               <StatusBar
                 animated={true}
@@ -87,9 +85,9 @@ export default function App() {
               />
               <Main />
             </View>
-          </AuthProvider>
-        </NavigationContainer>
-      </SafeAreaView>
-    </NativeBaseProvider>
+          </NativeBaseProvider>
+        </AuthProvider>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }

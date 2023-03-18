@@ -4,9 +4,9 @@ import StackNavigator, { AuthNavigator } from "./navigation/StackNavigator";
 
 import ErrorModal from "./components/shared/ErrorModal";
 import { AuthContext } from "../lib/context/authContext";
+import { View } from "react-native";
 
 const Main = () => {
-  const { state } = React.useContext(AuthContext);
   const [showModal, setShowModal] = React.useState(false);
   React.useEffect(() => {
     NetInfo.addEventListener((state) => {
@@ -15,14 +15,15 @@ const Main = () => {
     });
   }, []);
   return (
-    <>
-      {state.isLoggedIn ? <StackNavigator /> : <AuthNavigator />}
+    <View className="flex-1">
+      <StackNavigator />
       <ErrorModal
         title="Network Error"
         error="No internet connection. Try again later"
         isOpen={showModal}
+        onClose={setShowModal}
       />
-    </>
+    </View>
   );
 };
 

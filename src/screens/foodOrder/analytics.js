@@ -8,6 +8,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-A",
     room_no: 507,
+    phone_no: 9876543210,
     total: 1,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -20,6 +21,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-B",
     room_no: 507,
+    phone_no: 9876543210,
     total: 232,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -32,6 +34,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-F",
     room_no: 507,
+    phone_no: 9876543210,
     total: 3,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -44,6 +47,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-A",
     room_no: 507,
+    phone_no: 9876543210,
     total: 4,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -56,6 +60,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-B",
     room_no: 507,
+    phone_no: 9876543210,
     total: 5,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -68,6 +73,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-F",
     room_no: 507,
+    phone_no: 9876543210,
     total: 6,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -80,6 +86,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-A",
     room_no: 507,
+    phone_no: 9876543210,
     total: 7,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -92,6 +99,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-B",
     room_no: 507,
+    phone_no: 9876543210,
     total: 8,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -104,6 +112,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-F",
     room_no: 507,
+    phone_no: 9876543210,
     total: 9,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -116,6 +125,7 @@ const data = [
     name: "Devesh Meena",
     hostel: "MBH-B",
     room_no: 507,
+    phone_no: 9876543210,
     total: 10,
     cart: [
       { id: 1, name: "lays", price: 20, qty: 2 },
@@ -200,7 +210,10 @@ const Analytics = () => {
         </View>
         {analytics &&
           Object.keys(analytics[filter]).map((k, v) => (
-            <View className="items-center justify-between px-2 w-full flex-row">
+            <View
+              className="items-center justify-between px-2 w-full flex-row"
+              key={v}
+            >
               <TextBox class="text-lg">{k}</TextBox>
               <TextBox class="text-lg">{analytics[filter][k]}</TextBox>
             </View>

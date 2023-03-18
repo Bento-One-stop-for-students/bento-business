@@ -4,13 +4,28 @@ import TextBox from "../../components/shared/TextBox";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../../lib/context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
 
 const Status = () => {
-  const navigation = useNavigation();
-  const { dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = React.useContext(AuthContext);
 
   const [isOpen, setIsOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const updateServiceStatus = async () => {
+      try {
+        await setDoc(
+          doc(db, "status", state.uid),
+          {
+            status: `${isOpen ? "OPEN" : "CLOSED"}`,
+          },
+          { merge: true }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    updateServiceStatus();
+  }, [isOpen]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">
       <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2">

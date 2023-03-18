@@ -6,10 +6,16 @@ import { AuthContext } from "../../../lib/context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
 
 const Status = ({ navigation }) => {
-  const { dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = React.useContext(AuthContext);
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [onBreak, setOnBreak] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      setOnBreak(false);
+    }
+  }, [isOpen, onBreak]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">
       <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2">
@@ -25,7 +31,9 @@ const Status = ({ navigation }) => {
               onBreak ? "bg-emerald-500" : "bg-primary-1"
             } py-3 px-5 rounded-full mr-5`}
             onPress={() => {
-              setOnBreak(!onBreak);
+              if (isOpen) {
+                setOnBreak(!onBreak);
+              }
             }}
           >
             <TextBox class="text-white">{onBreak ? "Break" : "Work"}</TextBox>
