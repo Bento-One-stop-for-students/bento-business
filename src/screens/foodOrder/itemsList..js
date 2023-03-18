@@ -5,91 +5,21 @@ import TextBox from "../../components/shared/TextBox";
 import ListItem from "../../components/food-service/items-list/ListItem";
 import AddItemModal from "../../components/food-service/items-list/AddItemModal";
 import EditItemModal from "../../components/food-service/items-list/EditItemModal";
-
-const data = [
-  {
-    id: 1,
-    name: "lays",
-    qty: 4,
-    price: 10,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 2,
-    name: "kurkure",
-    qty: 20,
-    price: 10,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 3,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 4,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 5,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 6,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 7,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 8,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 9,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-  {
-    id: 10,
-    name: "lays",
-    qty: 10,
-    price: 20,
-    imgUrl:
-      "https://www.bigbasket.com/media/uploads/p/xxl/40202279_6-lays-potato-chips-classic-salted-best-quality-crunchy.jpg",
-  },
-];
+import { getAllFoodItems } from "../../../lib/firebase/snackmen";
 
 const ItemsList = () => {
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => {
+    const prepare = async () => {
+      try {
+        const res = await getAllFoodItems();
+        setData(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    prepare();
+  }, []);
   const [editItemData, setEditItemData] = React.useState();
   const [showAddItemModal, setShowAddItemModal] = React.useState(false);
   const [showEditItemModal, setShowEditItemModal] = React.useState(false);

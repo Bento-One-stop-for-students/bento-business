@@ -61,7 +61,7 @@ const AddItemModal = (props) => {
                 name: itemName,
                 price: itemPrice,
                 qty: itemQty,
-                imgUrl: itemImgUrl,
+                img_url: itemImgUrl,
               });
             }}
           />

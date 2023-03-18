@@ -1,141 +1,14 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
-
-const data = [
-  {
-    id: 1,
-    name: "Devesh Meena",
-    hostel: "MBH-A",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 1,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "kurkure", price: 20, qty: 2 },
-      { id: 3, name: "uncle chips", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 2,
-    name: "Devesh Meena",
-    hostel: "MBH-B",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 232,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "kurkure", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 3,
-    name: "Devesh Meena",
-    hostel: "MBH-F",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 3,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 4,
-    name: "Devesh Meena",
-    hostel: "MBH-A",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 4,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 5,
-    name: "Devesh Meena",
-    hostel: "MBH-B",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 5,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 6,
-    name: "Devesh Meena",
-    hostel: "MBH-F",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 6,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 7,
-    name: "Devesh Meena",
-    hostel: "MBH-A",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 7,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 8,
-    name: "Devesh Meena",
-    hostel: "MBH-B",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 8,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 9,
-    name: "Devesh Meena",
-    hostel: "MBH-F",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 9,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-  {
-    id: 10,
-    name: "Devesh Meena",
-    hostel: "MBH-B",
-    room_no: 507,
-    phone_no: 9876543210,
-    total: 10,
-    cart: [
-      { id: 1, name: "lays", price: 20, qty: 2 },
-      { id: 2, name: "lays", price: 20, qty: 2 },
-      { id: 3, name: "lays", price: 20, qty: 2 },
-    ],
-  },
-];
+import { getTodayOrders } from "../../../lib/firebase/snackmen";
 
 const Analytics = () => {
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => {
+    getTodayOrders(setData);
+  }, []);
+
   const [filter, setFilter] = React.useState("ALL");
   const [analytics, setAnalytics] = React.useState();
 

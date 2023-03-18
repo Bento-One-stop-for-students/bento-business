@@ -4,6 +4,7 @@ import TextBox from "../../components/shared/TextBox";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../../lib/context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
+import { updateBarberServiceStatus } from "../../../lib/firebase/barber";
 
 const Status = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
@@ -12,9 +13,18 @@ const Status = ({ navigation }) => {
   const [onBreak, setOnBreak] = React.useState(false);
 
   React.useEffect(() => {
-    if (!isOpen) {
-      setOnBreak(false);
-    }
+    const update = async () => {
+      if (!isOpen) {
+        setOnBreak(false);
+      }
+      try {
+        await updateBarberServiceStatus(isOpen, onBreak, state.uid);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    update();
   }, [isOpen, onBreak]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">

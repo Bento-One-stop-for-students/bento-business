@@ -15,7 +15,7 @@ const EditItemModal = (props) => {
     setItemName(props.itemData.name.toString());
     setItemPrice(props.itemData.price.toString());
     setItemQty(props.itemData.qty.toString());
-    setItemImgUrl(props.itemData.imgUrl.toString());
+    setItemImgUrl(props.itemData.img_url.toString());
   }, [props.itemData]);
 
   return (
@@ -26,7 +26,7 @@ const EditItemModal = (props) => {
         setItemName(props.itemData.name.toString());
         setItemPrice(props.itemData.price.toString());
         setItemQty(props.itemData.qty.toString());
-        setItemImgUrl(props.itemData.imgUrl.toString());
+        setItemImgUrl(props.itemData.img_url.toString());
       }}
       size={"xl"}
       closeOnOverlayClick={true}
@@ -79,13 +79,13 @@ const EditItemModal = (props) => {
                 name: itemName,
                 price: itemPrice,
                 qty: itemQty,
-                imgUrl: itemImgUrl,
+                img_url: itemImgUrl,
               });
               console.log({
                 name: itemName,
                 price: itemPrice,
                 qty: itemQty,
-                imgUrl: itemImgUrl,
+                img_url: itemImgUrl,
               });
             }}
           />

@@ -4,6 +4,7 @@ import TextBox from "../../components/shared/TextBox";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../../lib/context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
+import { updateSnackmenServiceStatus } from "../../../lib/firebase/snackmen";
 
 const Status = () => {
   const { state, dispatch } = React.useContext(AuthContext);
@@ -11,20 +12,15 @@ const Status = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const updateServiceStatus = async () => {
+    const update = async () => {
       try {
-        await setDoc(
-          doc(db, "status", state.uid),
-          {
-            status: `${isOpen ? "OPEN" : "CLOSED"}`,
-          },
-          { merge: true }
-        );
-      } catch (err) {
-        console.log(err);
+        await updateSnackmenServiceStatus(isOpen, state.uid);
+      } catch (error) {
+        console.log(error);
       }
     };
-    updateServiceStatus();
+
+    update();
   }, [isOpen]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">

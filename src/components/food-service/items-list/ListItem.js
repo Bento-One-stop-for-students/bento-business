@@ -22,7 +22,7 @@ const ListItem = ({ item, index, setShowEditItemModal, setEditItemData }) => {
         <Image
           className="w-20 h-20"
           source={{
-            uri: `${item.imgUrl}`,
+            uri: `${item.img_url}`,
           }}
           resizeMode="center"
         />

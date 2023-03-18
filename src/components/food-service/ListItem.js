@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Swipeable } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import OrderModal from "./orderModal";
+import { setDeliveredOrder } from "../../../lib/firebase/snackmen";
 
 const swipeRight = (progress, dragX) => {
   return (
@@ -34,21 +35,21 @@ const swipeRight = (progress, dragX) => {
   );
 };
 
-const ListItem = ({ index, user, setState, setSelectedItem, setShowModal }) => {
-  const [done, setDone] = React.useState(true);
+const ListItem = ({ user, setSelectedItem, setShowModal }) => {
   const [ref, setRef] = React.useState("");
   const height = new Animated.Value(70);
 
-  const animatedDelete = () => {
-    if (done) {
+  const animatedDelete = async () => {
+    try {
+      console.log({ id: user.userId, order: user.order_id });
+      await setDeliveredOrder(user.userId, user.order_id);
       Animated.timing(height, {
         toValue: 0,
-        duration: 150,
+        duration: 350,
         useNativeDriver: false,
-      }).start(() =>
-        setState((prevState) => prevState.filter((e) => e.id !== user.id))
-      );
-    } else {
+      }).start();
+    } catch (err) {
+      console.log(err);
       ref.close();
     }
   };
@@ -59,7 +60,7 @@ const ListItem = ({ index, user, setState, setSelectedItem, setShowModal }) => {
       renderRightActions={swipeRight}
       rightThreshold={150}
       onSwipeableOpen={animatedDelete}
-      key={user.id}
+      key={user.userId}
       ref={(ref) => {
         setRef(ref);
       }}
