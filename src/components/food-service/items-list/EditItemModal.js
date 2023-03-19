@@ -29,13 +29,6 @@ const EditItemModal = (props) => {
         qty: parseInt(itemQty.trim()),
         img_url: itemImgUrl,
       });
-      console.log({
-        id,
-        name: itemName,
-        price: itemPrice,
-        qty: itemQty,
-        img_url: itemImgUrl,
-      });
     } catch (error) {
       console.log(error);
     } finally {

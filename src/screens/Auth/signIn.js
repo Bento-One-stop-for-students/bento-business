@@ -35,9 +35,7 @@ const SignIn = ({ navigation, route }) => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
-        console.log(userCredential.user);
         try {
-          console.log(res);
           dispatch({
             type: "SIGN_IN",
             payload: {

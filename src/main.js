@@ -10,7 +10,6 @@ const Main = () => {
   React.useEffect(() => {
     NetInfo.addEventListener((state) => {
       setShowModal(!state.isConnected);
-      console.log(state);
     });
   }, []);
   return (

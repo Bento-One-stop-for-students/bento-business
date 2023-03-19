@@ -55,7 +55,6 @@ const ListItem = ({ index, user, setState }) => {
         useNativeDriver: false,
       }).start();
     } catch (err) {
-      console.log(err);
       ref.close();
     }
   };

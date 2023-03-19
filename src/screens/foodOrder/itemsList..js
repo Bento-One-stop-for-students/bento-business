@@ -24,7 +24,6 @@ const ItemsList = () => {
   const [showAddItemModal, setShowAddItemModal] = React.useState(false);
   const [showEditItemModal, setShowEditItemModal] = React.useState(false);
   React.useEffect(() => {
-    console.log(editItemData);
   }, [editItemData]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">

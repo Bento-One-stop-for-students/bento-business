@@ -40,7 +40,6 @@ const ListItem = ({ user, setSelectedItem, setShowModal }) => {
 
   const animatedDelete = async () => {
     try {
-      console.log({ id: user.userId, order: user.order_id });
       await setDeliveredOrder(user.userId, user.order_id);
       Animated.timing(height, {
         toValue: 0,
