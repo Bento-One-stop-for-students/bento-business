@@ -1,15 +1,50 @@
 import React from "react";
+
+import auth from "@react-native-firebase/auth";
+import { ToastAndroid, View } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
 import NetInfo from "@react-native-community/netinfo";
-import StackNavigator from "./navigation/StackNavigator";
 
 import ErrorModal from "./components/shared/ErrorModal";
-import { View } from "react-native";
+import StackNavigator from "./navigation/StackNavigator";
+import { AuthContext } from "../lib/context/authContext";
+import { getServiceStatus } from "../lib/firebase/user";
 
-const Main = () => {
+SplashScreen.preventAutoHideAsync();
+
+const Main = ({ setAppIsReady }) => {
   const [showModal, setShowModal] = React.useState(false);
+  const { dispatch } = React.useContext(AuthContext);
   React.useEffect(() => {
     NetInfo.addEventListener((state) => {
       setShowModal(!state.isConnected);
+    });
+
+    // check if already signed in
+    auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const { profession } = await getServiceStatus(user.uid);
+          dispatch({
+            type: "SIGN_IN",
+            payload: {
+              profession,
+              uid: user.uid,
+            },
+          });
+        } catch (error) {
+          ToastAndroid.showWithGravityAndOffset(
+            "Invalid email & password. Try again later",
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+          );
+          console.log(error);
+        } finally {
+          setAppIsReady(true);
+        }
+      }
     });
   }, []);
   return (

@@ -1,31 +1,43 @@
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  ToastAndroid,
+  Pressable,
+  ActivityIndicator,
+  ActivityIndicatorBase,
+} from "react-native";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../../lib/context/authContext";
 import { LinearGradient } from "expo-linear-gradient";
-import { updateBarberServiceStatus } from "../../../lib/firebase/barber";
-
+import auth from "@react-native-firebase/auth";
+import {
+  getServiceStatus,
+  updateServiceStatus,
+} from "../../../lib/firebase/user";
 const Status = ({ navigation }) => {
+  const [disabled, setDisabled] = React.useState(false);
   const { state, dispatch } = React.useContext(AuthContext);
-
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [onBreak, setOnBreak] = React.useState(false);
+  const [barberStatus, setBarberStatus] = React.useState("CLOSED");
 
   React.useEffect(() => {
-    const update = async () => {
-      if (!isOpen) {
-        setOnBreak(false);
-      }
+    const handlefetchBarberStatus = async () => {
       try {
-        await updateBarberServiceStatus(isOpen, onBreak, state.uid);
+        const { status } = await getServiceStatus(state.uid);
+        setBarberStatus(status);
       } catch (error) {
         console.log(error);
       }
     };
 
-    update();
-  }, [isOpen, onBreak]);
+    handlefetchBarberStatus();
+  }, []);
+
+  React.useEffect(() => {
+    console.log(barberStatus);
+  }, [barberStatus]);
+
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">
       <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2">
@@ -34,38 +46,124 @@ const Status = ({ navigation }) => {
         </TextBox>
       </View>
       <View className="mt-5">
-        <View className="flex-row border border-slate-300 w-[80vw] h-[10vh] rounded-3xl items-center justify-between mb-5">
-          <TextBox class="text-lg text-secondary-1 ml-5">Break?</TextBox>
-          <TouchableOpacity
-            className={`${
-              onBreak ? "bg-emerald-500" : "bg-primary-1"
-            } py-3 px-5 rounded-full mr-5`}
-            onPress={() => {
-              if (isOpen) {
-                setOnBreak(!onBreak);
+        <View className=" border border-slate-300 w-[80vw] rounded-3xl items-center justify-between mb-5 px-10 py-10">
+          <Pressable
+            className="w-full"
+            onPress={async () => {
+              try {
+                setDisabled("OPEN");
+                await updateServiceStatus(state.uid, "OPEN");
+                setBarberStatus("OPEN");
+              } catch (error) {
+                console.log(error);
+              } finally {
+                setDisabled(false);
               }
             }}
           >
-            <TextBox class="text-white">{onBreak ? "Break" : "Work"}</TextBox>
-          </TouchableOpacity>
-        </View>
-        <View className="flex-row border border-slate-300 w-[80vw] h-[10vh] rounded-3xl items-center justify-between mb-5">
-          <TextBox class="text-lg text-secondary-1 ml-5">Shop Status</TextBox>
-          <TouchableOpacity
-            className={`${
-              isOpen ? "bg-emerald-500" : "bg-primary-1"
-            } py-3 px-5 rounded-full mr-5`}
-            onPress={() => {
-              setIsOpen(!isOpen);
+            <LinearGradient
+              colors={
+                barberStatus !== "OPEN"
+                  ? ["#A7A7AD", "#414141"]
+                  : ["#6ECBFF", "#559AFF"]
+              }
+              className="bg-primary-1
+          py-3 px-5 rounded-2xl items-center justify-center w-full"
+            >
+              {disabled == "OPEN" ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : (
+                <TextBox class="text-lg text-white">Open</TextBox>
+              )}
+            </LinearGradient>
+          </Pressable>
+          <Pressable
+            className="w-full"
+            onPress={async () => {
+              try {
+                setDisabled("BREAK");
+                await updateServiceStatus(state.uid, "BREAK");
+                setBarberStatus("BREAK");
+              } catch (error) {
+                console.log(error);
+              } finally {
+                setDisabled(false);
+              }
             }}
           >
-            <TextBox class="text-white">{isOpen ? "Open" : "Closed"}</TextBox>
-          </TouchableOpacity>
+            <LinearGradient
+              colors={
+                barberStatus !== "BREAK"
+                  ? ["#A7A7AD", "#414141"]
+                  : ["#6ECBFF", "#559AFF"]
+              }
+              className="bg-primary-1
+          py-3 px-5 rounded-2xl items-center justify-center w-full mt-3"
+            >
+              {disabled == "BREAK" ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : (
+                <TextBox class="text-lg text-white">Break</TextBox>
+              )}
+            </LinearGradient>
+          </Pressable>
+          <Pressable
+            className="w-full"
+            onPress={async () => {
+              try {
+                setDisabled("CLOSED");
+                await updateServiceStatus(state.uid, "CLOSED");
+                setBarberStatus("CLOSED");
+              } catch (error) {
+                console.log(error);
+              } finally {
+                setDisabled(false);
+              }
+            }}
+          >
+            <LinearGradient
+              colors={
+                barberStatus !== "CLOSED"
+                  ? ["#A7A7AD", "#414141"]
+                  : ["#6ECBFF", "#559AFF"]
+              }
+              className="bg-primary-1
+          py-3 px-5 rounded-2xl items-center justify-center w-full mt-3"
+            >
+              {disabled == "CLOSED" ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : (
+                <TextBox class="text-lg text-white">Closed</TextBox>
+              )}
+            </LinearGradient>
+          </Pressable>
         </View>
         <TouchableOpacity
           className="rounded-3xl"
-          onPress={() => {
-            dispatch({ type: "SIGN_OUT" });
+          onPress={async () => {
+            try {
+              setDisabled("LOGOUT");
+              await auth().signOut();
+              ToastAndroid.showWithGravityAndOffset(
+                "Successfully logged out",
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+              );
+              dispatch({ type: "SIGN_OUT" });
+            } catch (error) {
+              ToastAndroid.showWithGravityAndOffset(
+                "Couldn't log out",
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+              );
+              console.log(error);
+            } finally {
+              setDisabled(false);
+            }
           }}
         >
           <LinearGradient
@@ -73,7 +171,11 @@ const Status = ({ navigation }) => {
             className="bg-primary-1
           py-3 px-5 rounded-3xl items-center justify-center w-[80vw] h-[10vh] mt-16"
           >
-            <TextBox class="text-white text-lg">Logout</TextBox>
+            {disabled == "LOGOUT" ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+              <TextBox class="text-white text-lg">Logout</TextBox>
+            )}
           </LinearGradient>
         </TouchableOpacity>
       </View>

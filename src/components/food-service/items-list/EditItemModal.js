@@ -5,6 +5,7 @@ import Button from "../../shared/Button";
 import TextBox from "../../shared/TextBox";
 import InputField from "../../shared/InputField";
 import { updateItem } from "../../../../lib/firebase/snackmen";
+import { ToastAndroid } from "react-native";
 
 const EditItemModal = (props) => {
   const [disabled, setDisbaled] = React.useState(false);
@@ -22,6 +23,21 @@ const EditItemModal = (props) => {
 
   const handleEditItem = async () => {
     try {
+      if (
+        itemName == "" ||
+        itemPrice == "" ||
+        itemQty == "" ||
+        itemImgUrl == ""
+      ) {
+        ToastAndroid.showWithGravityAndOffset(
+          "Values cannot be empty",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+        return;
+      }
       setDisbaled(true);
       await updateItem(props.itemData.id, {
         name: itemName,
@@ -29,7 +45,26 @@ const EditItemModal = (props) => {
         qty: parseInt(itemQty.trim()),
         img_url: itemImgUrl,
       });
+      ToastAndroid.showWithGravityAndOffset(
+        "Item updated successfully",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      setItemName(props.itemData.name.toString());
+      setItemPrice(props.itemData.price.toString());
+      setItemQty(props.itemData.qty.toString());
+      setItemImgUrl(props.itemData.img_url.toString());
+      props.onClose(false);
     } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Couldn't update item. Try again later",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       console.log(error);
     } finally {
       setDisbaled(false);

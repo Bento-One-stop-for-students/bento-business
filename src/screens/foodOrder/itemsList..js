@@ -1,4 +1,4 @@
-import { View, Text, Pressable, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList, ToastAndroid } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
@@ -15,6 +15,13 @@ const ItemsList = () => {
         const res = await getAllFoodItems();
         setData(res);
       } catch (error) {
+        ToastAndroid.showWithGravityAndOffset(
+          "Couldn't fetch items from server.",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
         console.log(error);
       }
     };
@@ -23,8 +30,7 @@ const ItemsList = () => {
   const [editItemData, setEditItemData] = React.useState();
   const [showAddItemModal, setShowAddItemModal] = React.useState(false);
   const [showEditItemModal, setShowEditItemModal] = React.useState(false);
-  React.useEffect(() => {
-  }, [editItemData]);
+  React.useEffect(() => {}, [editItemData]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">
       <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2">
