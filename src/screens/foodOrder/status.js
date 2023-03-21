@@ -47,7 +47,7 @@ const Status = () => {
             className="w-full"
             onPress={async () => {
               try {
-                setDisabled(true);
+                setDisabled("OPEN");
                 await updateServiceStatus(state.uid, "OPEN");
                 setSnackmenStatus("OPEN");
               } catch (error) {
@@ -66,7 +66,7 @@ const Status = () => {
               className="bg-primary-1
           py-3 px-5 rounded-2xl items-center justify-center w-full"
             >
-              {disabled ? (
+              {disabled == "OPEN" ? (
                 <ActivityIndicator size="large" color="white" />
               ) : (
                 <TextBox class="text-lg text-white">Open</TextBox>
@@ -77,7 +77,7 @@ const Status = () => {
             className="w-full mt-3"
             onPress={async () => {
               try {
-                setDisabled(true);
+                setDisabled("CLOSED");
                 await updateServiceStatus(state.uid, "CLOSED");
                 setSnackmenStatus("CLOSED");
               } catch (error) {
@@ -96,7 +96,7 @@ const Status = () => {
               className="bg-primary-1
           py-3 px-5 rounded-2xl items-center justify-center w-full"
             >
-              {disabled ? (
+              {disabled == "CLOSED" ? (
                 <ActivityIndicator size="large" color="white" />
               ) : (
                 <TextBox class="text-lg text-white">Closed</TextBox>
@@ -106,29 +106,30 @@ const Status = () => {
         </View>
         <TouchableOpacity
           className="rounded-3xl"
-          onPress={() => {
-            auth()
-              .signOut()
-              .then(() => {
-                ToastAndroid.showWithGravityAndOffset(
-                  "Successfully logged out",
-                  ToastAndroid.SHORT,
-                  ToastAndroid.BOTTOM,
-                  25,
-                  50
-                );
-                dispatch({ type: "SIGN_OUT" });
-              })
-              .catch((error) => {
-                ToastAndroid.showWithGravityAndOffset(
-                  "Couldn't log out",
-                  ToastAndroid.SHORT,
-                  ToastAndroid.BOTTOM,
-                  25,
-                  50
-                );
-                console.log(error);
-              });
+          onPress={async () => {
+            try {
+              setDisabled("LOGOUT");
+              await auth().signOut();
+              ToastAndroid.showWithGravityAndOffset(
+                "Successfully logged out",
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+              );
+              dispatch({ type: "SIGN_OUT" });
+            } catch (error) {
+              ToastAndroid.showWithGravityAndOffset(
+                "Couldn't log out",
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+              );
+              console.log(error);
+            } finally {
+              setDisabled(false);
+            }
           }}
         >
           <LinearGradient
@@ -136,7 +137,11 @@ const Status = () => {
             className="bg-primary-1
           py-3 px-5 rounded-3xl items-center justify-center w-[80vw] h-[10vh] mt-16"
           >
-            <TextBox class="text-white text-lg">Logout</TextBox>
+            {disabled == "LOGOUT" ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+              <TextBox class="text-white text-lg">Logout</TextBox>
+            )}
           </LinearGradient>
         </TouchableOpacity>
       </View>

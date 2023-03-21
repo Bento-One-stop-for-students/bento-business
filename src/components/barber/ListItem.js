@@ -34,7 +34,7 @@ const swipeRight = (progress, dragX) => {
   );
 };
 
-const ListItem = ({ index, user, setState }) => {
+const ListItem = ({ user }) => {
   const [ref, setRef] = React.useState("");
   const height = new Animated.Value(70);
 

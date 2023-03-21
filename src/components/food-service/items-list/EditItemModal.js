@@ -4,8 +4,8 @@ import { Modal } from "native-base";
 import Button from "../../shared/Button";
 import TextBox from "../../shared/TextBox";
 import InputField from "../../shared/InputField";
-import { updateItem } from "../../../../lib/firebase/snackmen";
-import { ToastAndroid } from "react-native";
+import { deleteItem, updateItem } from "../../../../lib/firebase/snackmen";
+import { ActivityIndicator, Pressable, ToastAndroid, View } from "react-native";
 
 const EditItemModal = (props) => {
   const [disabled, setDisbaled] = React.useState(false);
@@ -38,7 +38,7 @@ const EditItemModal = (props) => {
         );
         return;
       }
-      setDisbaled(true);
+      setDisbaled("edit");
       await updateItem(props.itemData.id, {
         name: itemName,
         price: parseInt(itemPrice.trim()),
@@ -70,6 +70,32 @@ const EditItemModal = (props) => {
       setDisbaled(false);
     }
   };
+
+  const handleDeleteItem = async () => {
+    try {
+      setDisbaled("delete");
+      await deleteItem(props.itemData.id);
+      ToastAndroid.showWithGravityAndOffset(
+        "Successfully deleted item",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.showWithGravityAndOffset(
+        "Couldn't delete item",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    } finally {
+      setDisbaled(false);
+      props.onClose(false);
+    }
+  };
   return (
     <Modal
       isOpen={props.isOpen}
@@ -85,8 +111,23 @@ const EditItemModal = (props) => {
       animationPreset="slide"
     >
       <Modal.Content>
-        <Modal.CloseButton />
-        <Modal.Header>Edit Item</Modal.Header>
+        <Modal.Header>
+          <View className="flex-row items-center ">
+            <TextBox class="mr-5">Edit Item</TextBox>
+            <Pressable
+              className="w-16 py-2 rounded-xl bg-red-500 items-center"
+              onPress={handleDeleteItem}
+            >
+              {disabled == "delete" ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <TextBox class="text-white">Delete</TextBox>
+              )}
+            </Pressable>
+          </View>
+          <Modal.CloseButton />
+        </Modal.Header>
+
         <Modal.Body>
           <TextBox class="mt-2">Name </TextBox>
           <InputField
@@ -123,7 +164,7 @@ const EditItemModal = (props) => {
               itemPrice == "" ||
               itemQty == "" ||
               itemImgUrl == "" ||
-              disabled
+              disabled == "edit"
             }
             onPress={handleEditItem}
           />

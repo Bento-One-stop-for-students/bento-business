@@ -10,22 +10,7 @@ import { getAllFoodItems } from "../../../lib/firebase/snackmen";
 const ItemsList = () => {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
-    const prepare = async () => {
-      try {
-        const res = await getAllFoodItems();
-        setData(res);
-      } catch (error) {
-        ToastAndroid.showWithGravityAndOffset(
-          "Couldn't fetch items from server.",
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM,
-          25,
-          50
-        );
-        console.log(error);
-      }
-    };
-    prepare();
+    getAllFoodItems(setData);
   }, []);
   const [editItemData, setEditItemData] = React.useState();
   const [showAddItemModal, setShowAddItemModal] = React.useState(false);

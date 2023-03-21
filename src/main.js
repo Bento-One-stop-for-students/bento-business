@@ -33,13 +33,6 @@ const Main = ({ setAppIsReady }) => {
             },
           });
         } catch (error) {
-          ToastAndroid.showWithGravityAndOffset(
-            "Invalid email & password. Try again later",
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-            25,
-            50
-          );
           console.log(error);
         } finally {
           setAppIsReady(true);
