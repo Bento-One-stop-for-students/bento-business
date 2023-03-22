@@ -1,4 +1,4 @@
-import { View, Text, Pressable, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList, ToastAndroid } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
@@ -10,22 +10,12 @@ import { getAllFoodItems } from "../../../lib/firebase/snackmen";
 const ItemsList = () => {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
-    const prepare = async () => {
-      try {
-        const res = await getAllFoodItems();
-        setData(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    prepare();
+    getAllFoodItems(setData);
   }, []);
   const [editItemData, setEditItemData] = React.useState();
   const [showAddItemModal, setShowAddItemModal] = React.useState(false);
   const [showEditItemModal, setShowEditItemModal] = React.useState(false);
-  React.useEffect(() => {
-    console.log(editItemData);
-  }, [editItemData]);
+  React.useEffect(() => {}, [editItemData]);
   return (
     <View className="flex-1 w-full items-center justify-start bg-primary-2">
       <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2">

@@ -63,10 +63,6 @@ export default function App() {
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
-    return null;
-  }
-
   const theme = {
     colors: {
       background: "#FBFBFB",
@@ -83,7 +79,7 @@ export default function App() {
                 backgroundColor="#FBFBFB"
                 style="dark"
               />
-              <Main />
+              <Main setAppIsReady={setAppIsReady} />
             </View>
           </NativeBaseProvider>
         </AuthProvider>

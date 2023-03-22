@@ -3,31 +3,10 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from "@react-navigation/stack";
-import HomeFS from "../screens/foodOrder";
-import Home from "../screens/Auth";
 import SignIn from "../screens/Auth/signIn";
 import BarberTabNavigator from "./BarberTabNavigator";
 import FSTabNavigator from "./FoodServiceTabNavigator";
 import { AuthContext } from "../../lib/context/authContext";
-
-const FS = createStackNavigator();
-const Auth = createStackNavigator();
-
-export const AuthNavigator = () => {
-  return (
-    <Auth.Navigator
-      screenOptions={{
-        gestureEnabled: true,
-        headerShown: false,
-        ...TransitionPresets.SlideFromRightIOS,
-      }}
-      initialRouteName="home"
-    >
-      <Auth.Screen name="home" component={Home} />
-      <Auth.Screen name="sign-in" component={SignIn} />
-    </Auth.Navigator>
-  );
-};
 
 const Stack = createStackNavigator();
 
@@ -42,7 +21,6 @@ const StackNavigator = () => {
     >
       {!state.isLoggedIn ? (
         <>
-          <Stack.Screen name="home" component={Home} />
           <Stack.Screen name="sign-in" component={SignIn} />
         </>
       ) : state.profession == "barber" ? (

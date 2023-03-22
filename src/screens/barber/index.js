@@ -17,7 +17,7 @@ const HomeBarber = ({ navigation }) => {
     <View className="flex-1 items-center justify-start bg-primary-2">
       <View className="w-full mt-3 flex-row items-center justify-around border-b border-b-primary-1 pb-2 ">
         <TextBox class="text-secondary-1 text-3xl" italic>
-          Orders
+          Bookings
         </TextBox>
         <TextBox class="text-primary-1 text-lg">
           Total : {data ? data.length : 0}

@@ -1,10 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Animated, Pressable } from "react-native";
+import { View, StyleSheet, Animated, Pressable, ToastAndroid } from "react-native";
 import TextBox from "../shared/TextBox";
 import { LinearGradient } from "expo-linear-gradient";
 import { Swipeable } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import OrderModal from "./orderModal";
 import { setDeliveredOrder } from "../../../lib/firebase/snackmen";
 
 const swipeRight = (progress, dragX) => {
@@ -41,19 +40,31 @@ const ListItem = ({ user, setSelectedItem, setShowModal }) => {
 
   const animatedDelete = async () => {
     try {
-      console.log({ id: user.userId, order: user.order_id });
       await setDeliveredOrder(user.userId, user.order_id);
+      ToastAndroid.showWithGravityAndOffset(
+        "Order delivered successfully",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       Animated.timing(height, {
         toValue: 0,
         duration: 350,
         useNativeDriver: false,
       }).start();
     } catch (err) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Couldn't remove order. Some error occured",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       console.log(err);
       ref.close();
     }
   };
-
   return (
     <Swipeable
       friction={2}

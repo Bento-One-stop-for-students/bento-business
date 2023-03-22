@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 import React from "react";
 import TextBox from "../../components/shared/TextBox";
 import { StatusBar } from "expo-status-bar";
@@ -8,12 +8,52 @@ import { KeyboardAvoidingView } from "react-native";
 import { AuthContext } from "../../../lib/context/authContext";
 import ErrorModal from "../../components/shared/ErrorModal";
 import auth from "@react-native-firebase/auth";
+import { getServiceStatus } from "../../../lib/firebase/user";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignIn = ({ navigation, route }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const [disabled, setDisabled] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showErrorModal, setShowErrorModal] = React.useState(false);
+
+  const handleSignIn = () => {
+    setDisabled(true);
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(async (userCredential) => {
+        try {
+          const { profession } = await getServiceStatus(
+            userCredential.user.uid
+          );
+          console.log(profession);
+          dispatch({
+            type: "SIGN_IN",
+            payload: {
+              profession: profession,
+              uid: userCredential.user.uid,
+            },
+          });
+        } catch (error) {
+          ToastAndroid.showWithGravityAndOffset(
+            "Invalid email & password. Try again later",
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+          );
+          console.log(error);
+        }
+        setDisabled(false);
+      })
+      .catch((error) => {
+        setShowErrorModal(true);
+        console.error(error);
+        setDisabled(false);
+      });
+  };
+
   return (
     <KeyboardAvoidingView
       className="flex-1 items-center justify-center"
@@ -36,35 +76,7 @@ const SignIn = ({ navigation, route }) => {
             password={true}
           />
         </View>
-        <Button
-          text="Sign In"
-          onPress={() => {
-            auth()
-              .signInWithEmailAndPassword(email, password)
-              .then((userCredential) => {
-                console.log(userCredential.user);
-                console.log("User account created & signed in!");
-                dispatch({
-                  type: "SIGN_IN",
-                  payload: {
-                    profession: route.params.profession,
-                    uid: userCredential.user.uid,
-                  },
-                });
-                console.log({
-                  profession: route.params.profession,
-                  uid: userCredential.user.uid,
-                });
-              })
-              .catch((error) => {
-                setShowErrorModal(true);
-                console.error(error);
-              });
-          }}
-          disabled={
-            email == "" || password == "" || password.length < 8 ? true : false
-          }
-        />
+        <Button text="Sign In" onPress={handleSignIn} disabled={disabled} />
       </View>
       <ErrorModal
         isOpen={showErrorModal}

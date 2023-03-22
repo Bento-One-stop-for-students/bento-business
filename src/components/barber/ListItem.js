@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated, ToastAndroid } from "react-native";
 import TextBox from "../shared/TextBox";
 import { LinearGradient } from "expo-linear-gradient";
 import { Swipeable } from "react-native-gesture-handler";
@@ -34,7 +34,7 @@ const swipeRight = (progress, dragX) => {
   );
 };
 
-const ListItem = ({ index, user, setState }) => {
+const ListItem = ({ user }) => {
   const [ref, setRef] = React.useState("");
   const height = new Animated.Value(70);
 
@@ -48,14 +48,26 @@ const ListItem = ({ index, user, setState }) => {
   const animatedDelete = async () => {
     try {
       await deleteBarberBooking(user.booking_id);
-
+      ToastAndroid.showWithGravityAndOffset(
+        "Removed from queue",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       Animated.timing(height, {
         toValue: 0,
         duration: 350,
         useNativeDriver: false,
       }).start();
     } catch (err) {
-      console.log(err);
+      ToastAndroid.showWithGravityAndOffset(
+        "Couldn't remove from queue. Some error occured",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
       ref.close();
     }
   };
