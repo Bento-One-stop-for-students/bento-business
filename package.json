@@ -12,9 +12,9 @@
   "scripts": {
     "start:development": "FIREBASE_ENV=dev expo start --dev-client",
     "start:production": "FIREBASE_ENV=prod expo start --dev-client",
-    "build:dev-client": "eas build --profile development --platform android",
-    "build:development": "eas build --profile preview-development --platform android ",
-    "build:production": "eas build --profile preview-production --platform android",
+    "build:dev-client": "eas build --local --profile development --platform android",
+    "build:development": "eas build --local --profile preview-development --platform android",
+    "build:production": "eas build --local --profile preview-production --platform android",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
