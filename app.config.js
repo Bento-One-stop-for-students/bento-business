@@ -38,6 +38,10 @@ export default () => ({
       eas: {
         projectId: "4ae97e14-20dd-43d7-bbab-c38b4698e397",
       },
+      firebaseUrl:
+        process.env.FIREBASE_ENV == "prod"
+          ? "https://us-central1-bento-5ad4e.cloudfunctions.net/appProd/api"
+          : "https://us-central1-bento-5ad4e.cloudfunctions.net/app/api",
     },
   },
 });

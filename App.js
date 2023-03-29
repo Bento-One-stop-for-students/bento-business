@@ -46,7 +46,6 @@ export default function App() {
           Lato_900Black_Italic,
           Pattaya_400Regular,
         });
-        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
         console.warn(e);
       } finally {
