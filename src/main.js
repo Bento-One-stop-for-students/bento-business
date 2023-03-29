@@ -22,8 +22,8 @@ const Main = ({ setAppIsReady }) => {
 
     // check if already signed in
     auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
+      try {
+        if (user) {
           const { profession } = await getServiceStatus(user.uid);
           dispatch({
             type: "SIGN_IN",
@@ -32,11 +32,11 @@ const Main = ({ setAppIsReady }) => {
               uid: user.uid,
             },
           });
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setAppIsReady(true);
         }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setAppIsReady(true);
       }
     });
   }, []);

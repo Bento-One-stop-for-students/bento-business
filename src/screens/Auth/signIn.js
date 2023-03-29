@@ -6,24 +6,22 @@ import InputField from "../../components/shared/InputField";
 import Button from "../../components/shared/Button";
 import { KeyboardAvoidingView } from "react-native";
 import { AuthContext } from "../../../lib/context/authContext";
-import ErrorModal from "../../components/shared/ErrorModal";
 import auth from "@react-native-firebase/auth";
 import { getServiceStatus } from "../../../lib/firebase/user";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const SignIn = ({ navigation, route }) => {
+const SignIn = () => {
   const { state, dispatch } = React.useContext(AuthContext);
   const [disabled, setDisabled] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [showErrorModal, setShowErrorModal] = React.useState(false);
-
   const handleSignIn = () => {
     setDisabled(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
         try {
+          console.log(userCredential.user);
           const { profession } = await getServiceStatus(
             userCredential.user.uid
           );
@@ -45,11 +43,6 @@ const SignIn = ({ navigation, route }) => {
           );
           console.log(error);
         }
-        setDisabled(false);
-      })
-      .catch((error) => {
-        setShowErrorModal(true);
-        console.error(error);
         setDisabled(false);
       });
   };
@@ -78,12 +71,6 @@ const SignIn = ({ navigation, route }) => {
         </View>
         <Button text="Sign In" onPress={handleSignIn} disabled={disabled} />
       </View>
-      <ErrorModal
-        isOpen={showErrorModal}
-        onClose={setShowErrorModal}
-        title="Invalid Credentials"
-        error="Invalid email or password"
-      />
     </KeyboardAvoidingView>
   );
 };
