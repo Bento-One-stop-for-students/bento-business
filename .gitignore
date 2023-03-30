@@ -12,3 +12,5 @@ web-build/
 .DS_Store
 google-services.json
 builds/
+app.config.js
+

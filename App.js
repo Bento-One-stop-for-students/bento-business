@@ -68,7 +68,7 @@ export default function App() {
     },
   };
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 ">
       <NavigationContainer theme={theme}>
         <AuthProvider>
           <NativeBaseProvider>

@@ -1,18 +1,38 @@
 {
+  "cli": {
+    "version": ">= 3.7.2",
+    "appVersionSource": "remote"
+  },
   "build": {
     "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+      "env": {
+        "FIREBASE_ENV": "dev"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "development"
     },
-    "preview": {
-      "env":{
-        "VAR_FIREBASE" : "prod"
+    "production": {
+      "env": {
+        "FIREBASE_ENV": "prod"
       },
-        "android": {
-          "buildType": "apk"
-        }
+      "channel": "production",
+      "android": {
+        "buildType": "apk"
       },
-      "production": {}
+      "autoIncrement": true
+    },
+    "development-client": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m1-medium"
+      },
+      "channel": "development"
     }
+  },
+  "submit": {
+    "production": {}
   }
-  
+}
